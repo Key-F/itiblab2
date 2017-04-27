@@ -149,5 +149,20 @@ namespace itiblab2_next
             DrawPoint(a, b, y);
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int N = 20;
+            int p = 4; // Исходное количество нейронов
+            int nu = 1; // Коэффициент обучения
+            int a = -1; // Нижняя граница временного интервала
+            int b = 1; // Верхняя граница временного интервала
+            double[] t = new double[N];
+            double[] y = new double[N];
+            t = formula.respred(a, b, N);
+            for (int i = 0; i < t.Length; i++)
+                y[i] = formula.tsin(t[i]);
+            formula.obuch(y, t, p, N);
+        }
     }
 }
