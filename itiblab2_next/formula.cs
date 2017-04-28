@@ -44,7 +44,7 @@ namespace itiblab2_next
         public static List<double> converter(double[] x)
         {
             List<double> xc = new List<double>();
-            for (int i = 0; i < x.Length - 1; i++)
+            for (int i = 0; i < x.Length; i++)
             {
                 xc.Add(x[i]);
             }
@@ -82,11 +82,12 @@ namespace itiblab2_next
                     epoha Ep_ = new epoha(nextw);
                     Ep.Add(Ep_);
                     Ep[k].nomer = k;
+                    int j = 0;
                     Ep[k].Y = new double[20];
                     double[] tempW = nextw.ToArray();  
-                    for (int i = 0; i < n; i++)
+                    for (int i = 0; i < p; i++)
                     {
-                        net1[i] = paramsNS.net(tempW, t, p, n);
+                        net1[i] = paramsNS.net(tempW, X[i], p, n);
                         //double outz =  tsin(net1[i]);
                         Ep[k].Y[i] = net1[i];
                     }
@@ -94,19 +95,19 @@ namespace itiblab2_next
 
                     if (Ep[k].E > 1)
                     {                        
-                        for (int i = 0; i < n; i++)
+                        for (int i = 0; i < X.Count; i++)
                         {
                             net1[i] = paramsNS.net(tempW, t, p, n);
-                            double outz =  tsin(net1[i]);
+                            
                             dlta[i] = paramsNS.delta(real[i], Ep[k].Y[i]);                            
-                            double[] temp = paramsNS.pereshetW(tempW, t, net1[i], 0.3, dlta[i]);
+                            double[] temp = paramsNS.pereshetW(tempW, X[i], net1[i], 0.3, dlta[i]);
                             nextw = converter(temp);                                           
                         }
                     }
                     prost = Ep[k].E;
                     
                     k++;                                      
-                } while (prost != 0);
+                } while (prost < 0.4); //
                 
             
         }

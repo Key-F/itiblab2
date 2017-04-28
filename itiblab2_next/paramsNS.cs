@@ -9,12 +9,12 @@ namespace itiblab2_next
     class paramsNS
     {
 
-        public static double net(double[] w, double[] x, int p, int n)
+        public static double net(double[] w, double[] x, int p, int n) // x - полученные значения
         {
             double net = 0;
             for (int k = 0; k < p - 1; k++)
             {
-                net = net + w[k] * x[n - p + k - 1]; // add
+                net = net + w[k] * x[k]; // add
             }
             return net = net + w[p - 1]; // + w0
         }
