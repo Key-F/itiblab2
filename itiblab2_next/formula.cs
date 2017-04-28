@@ -8,10 +8,34 @@ namespace itiblab2_next
 {
     class formula
     {
-        
-        public static double Err()
+
+        public static List<double[]> makeX(double[] t, int p) // Создаем матрицу 
         {
-            return 0;
+            int k = 0; // Смещение
+            int k1 = 0;
+            double[] temp1 = new double[p];
+            List<double[]> X = new List<double[]>();
+            do
+            {
+                k1 = k;
+                for (int i = 0; i < p; i++)
+                {
+                    
+                    temp1[i] = t[k1];
+                    k1++;
+                    double[] temp2 = new double[p];
+                    
+                    if (i == p - 1)
+                    {
+                        Array.Copy(temp1, temp2, i + 1);
+                        X.Add(temp2);
+
+                    }
+                }
+                k++;           
+            }
+            while (k1 != t.Length);
+            return X;
         }
         public static double tsin(double t)
         {
@@ -49,9 +73,10 @@ namespace itiblab2_next
             //int[] F = function.getF(X);
             double[] dlta = new double[20];
             double[] net1 = new double[20];
-            List<double> nextw = Enumerable.Repeat(0.0, p).ToList(); // Значения для весов следующей эпохи, заполняем нулями
+            List<double[]> X = makeX(t, p);
+            List<double> nextw = Enumerable.Repeat(0.0, p + 1).ToList(); // Значения для весов следующей эпохи, заполняем нулями, +1 для w0
             
-            //double[] nextw = new double[6 + 1] { 0 };           
+                     
                 do
                 {
                     epoha Ep_ = new epoha(nextw);
@@ -62,8 +87,8 @@ namespace itiblab2_next
                     for (int i = 0; i < n; i++)
                     {
                         net1[i] = paramsNS.net(tempW, t, p, n);
-                        double outz =  tsin(net1[i]);
-                        Ep[k].Y[i] = outz;
+                        //double outz =  tsin(net1[i]);
+                        Ep[k].Y[i] = net1[i];
                     }
                     Ep[k].E = paramsNS.error(n, Ep[k].Y, real);
 

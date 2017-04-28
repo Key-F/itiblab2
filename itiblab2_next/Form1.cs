@@ -153,7 +153,7 @@ namespace itiblab2_next
         private void button3_Click(object sender, EventArgs e)
         {
             int N = 20;
-            int p = 4; // Исходное количество нейронов
+            int p = 6; // Исходное количество нейронов
             int nu = 1; // Коэффициент обучения
             int a = -1; // Нижняя граница временного интервала
             int b = 1; // Верхняя граница временного интервала
