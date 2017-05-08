@@ -17,23 +17,7 @@ namespace itiblab2_next
         {
             InitializeComponent();
         }
-
-        public void button1_Click(object sender, EventArgs e)
-        {
-            int N = 20;
-            int p = 4; // Исходное количество нейронов
-            int nu = 1; // Коэффициент обучения
-            int a = -1; // Нижняя граница временного интервала
-            int b = 1; // Верхняя граница временного интервала
-            int[,] X = new int[p, N + N]; // N точек первого интервала и N точек следующего интервала
-            double[] t = new double[N];
-            double[] y = new double[N];
-            t = formula.respred(a, b, N);
-            for (int i = 0; i < t.Length; i++)
-                y[i] = formula.tsin(t[i]);
-            DrawGraph(a, b, y);
-            
-        }
+       
         public void DrawGraph(int a, int b, double[] y)
         {
             int i = 0;
@@ -61,8 +45,14 @@ namespace itiblab2_next
         }
         private void Draw2Point(int a, int b, double[] y, double[] realy)
         {
+            
+            
             // Получим панель для рисования
             GraphPane pane = zedGraphControl1.GraphPane;
+
+            pane.XAxis.Title.Text = "Координата X"; //подпись оси X
+            pane.YAxis.Title.Text = "Координата Y"; //подпись оси Y
+            pane.Title.Text = "(x^2)*sin(x)"; //подпись графика
 
             // Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы
             pane.CurveList.Clear();
@@ -125,12 +115,60 @@ namespace itiblab2_next
             myCurve_.Symbol.Fill.Type = FillType.Solid;
 
            
-            myCurve.Symbol.Size = 7;
+            myCurve.Symbol.Size = 4;
 
+            myCurve_.Symbol.Size = 6;
+            if (checkBox1.CheckState == CheckState.Checked)
+            {
+                // !!!
+                // Включаем отображение сетки напротив крупных рисок по оси X
+                pane.XAxis.MajorGrid.IsVisible = true;
+
+                // Задаем вид пунктирной линии для крупных рисок по оси X:
+                // Длина штрихов равна 10 пикселям, ... 
+                pane.XAxis.MajorGrid.DashOn = 10;
+
+                // затем 5 пикселей - пропуск
+                pane.XAxis.MajorGrid.DashOff = 5;
+
+
+                // Включаем отображение сетки напротив крупных рисок по оси Y
+                pane.YAxis.MajorGrid.IsVisible = true;
+
+                // Аналогично задаем вид пунктирной линии для крупных рисок по оси Y
+                pane.YAxis.MajorGrid.DashOn = 10;
+                pane.YAxis.MajorGrid.DashOff = 5;
+
+
+                // Включаем отображение сетки напротив мелких рисок по оси X
+                pane.YAxis.MinorGrid.IsVisible = true;
+
+                // Задаем вид пунктирной линии для крупных рисок по оси Y: 
+                // Длина штрихов равна одному пикселю, ... 
+                pane.YAxis.MinorGrid.DashOn = 1;
+
+                // затем 2 пикселя - пропуск
+                pane.YAxis.MinorGrid.DashOff = 2;
+
+                // Включаем отображение сетки напротив мелких рисок по оси Y
+                pane.XAxis.MinorGrid.IsVisible = true;
+
+                // Аналогично задаем вид пунктирной линии для крупных рисок по оси Y
+                pane.XAxis.MinorGrid.DashOn = 1;
+                pane.XAxis.MinorGrid.DashOff = 2;
+            }
+            else
+            {
+                pane.XAxis.MajorGrid.IsVisible = false;
+                pane.XAxis.MinorGrid.IsVisible = false;
+                pane.YAxis.MajorGrid.IsVisible = false;
+                pane.YAxis.MinorGrid.IsVisible = false;
+            }
             zedGraphControl1.AxisChange();
 
             
             zedGraphControl1.Invalidate();
+           
         }
         private void DrawPoint(int a, int b, double[] y)
         {
@@ -171,10 +209,7 @@ namespace itiblab2_next
             // !!!
             // У кривой линия будет невидимой
            // Form1 temp = new Form1();
-            if (checkBox1.CheckState == CheckState.Checked)
-            myCurve.Line.IsVisible = true;
-            else
-                myCurve.Line.IsVisible = false;
+            
 
             // !!!
             // Цвет заполнения отметок (ромбиков) - голубой
@@ -206,28 +241,18 @@ namespace itiblab2_next
             zedGraphControl1.Invalidate();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            int N = 20;
-            int p = 4; // Исходное количество нейронов
-            int nu = 1; // Коэффициент обучения
-            int a = -1; // Нижняя граница временного интервала
-            int b = 1; // Верхняя граница временного интервала
-            int[,] X = new int[p, N + N]; // N точек первого интервала и N точек следующего интервала
-            double[] t = new double[N];
-            double[] y = new double[N];
-            t = formula.respred(a, b, N);
-            for (int i = 0; i < t.Length; i++)
-                y[i] = formula.tsin(t[i]);
-            DrawPoint(a, b, y);
-
-        }
+       
 
         private void button3_Click(object sender, EventArgs e)
         {
             int N = 20;
-            int p = 6; // Исходное количество нейронов
-            int nu = 1; // Коэффициент обучения
+            int p = Convert.ToInt32(textBox3.Text); // Исходное количество нейронов
+            if (p >= N)
+            {
+                MessageBox.Show("p должно быть меньше N", "Ошибка", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                return;
+            }
+            double nu = double.Parse(textBox2.Text); // Коэффициент обучения
             int a = -1; // Нижняя граница временного интервала
             int b = 1; // Верхняя граница временного интервала
             double[] t = new double[N];
@@ -236,7 +261,7 @@ namespace itiblab2_next
             t = formula.respred(a, b, N);
             for (int i = 0; i < t.Length; i++)
                 y[i] = formula.tsin(t[i]);
-            epoha EP = formula.obuch(y, t, p, N, numepoh);
+            epoha EP = formula.obuch(y, t, p, N, numepoh, nu);
             double result;
             double[] finalresult = new double [2 * N];
             for (int dd = 0; dd < y.Length; dd++)
