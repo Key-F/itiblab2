@@ -77,9 +77,9 @@ namespace itiblab2_next
              sample[sample.Count() - 1] = result;
              return sample;
          }
-        public static void obuch(double[] real, double[] t, int p, int n)  // real - значения, расчитанные по формуле, n = 20; t - распределение
+        public static epoha obuch(double[] real, double[] t, int p, int n, int epoch)  // real - значения, расчитанные по формуле, n = 20; t - распределение
         {
-            int epoch = 20;
+            //int epoch = 2000;
             int k = 0; // Счетчик эпох
             double prost = 1; // Штука для останоки
             List<epoha> Ep = new List<epoha>();            
@@ -104,7 +104,7 @@ namespace itiblab2_next
                         List<double> tempT = getT(real, i, i + p);
                         net1 = paramsNS.net(tempW, tempT, p);
                         dlta = paramsNS.delta(real[i + p], net1);
-                        tempW = paramsNS.pereshetW(tempW, tempT, 0.3, dlta);
+                        tempW = paramsNS.pereshetW(tempW, tempT, 1, dlta);
                         
                          nextw = converter(tempW);
 
@@ -140,15 +140,10 @@ namespace itiblab2_next
                     k++; 
                     
                 } while (k != epoch); // пока не пройдем эпохи
+                return Ep[epoch - 1];
 
-                double result;
-                List<double> result_vector = new List<double>();
-                for (int i = 0; i < n; i++)
-                {
-                    result = paramsNS.net(Ep[epoch - 1].W, converter(real), p);
-                    result_vector.Add(result);
-                    real = UpdateSample(real, result);
-                }
+
+               
                
         }
         }

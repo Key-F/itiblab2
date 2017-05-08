@@ -59,6 +59,79 @@ namespace itiblab2_next
             zedGraphControl1.Refresh();
             zedGraphControl1.Visible = true;
         }
+        private void Draw2Point(int a, int b, double[] y, double[] realy)
+        {
+            // Получим панель для рисования
+            GraphPane pane = zedGraphControl1.GraphPane;
+
+            // Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы
+            pane.CurveList.Clear();
+
+            // Создадим список точек
+            PointPairList list1 = new PointPairList(); // Для y
+            PointPairList list2 = new PointPairList(); // Для realy
+            int i = 0;
+            
+
+            // Заполняем список точек
+
+            for (double x = -1; x <= (b - 0.01); x += 0.1)// чертим график 0.99 чтобы exeption не было
+            {
+                list1.Add(x, y[i]);//расчитываем координаты
+                list2.Add(x, realy[i]);
+                i++;
+            }
+            
+
+            // !!!
+            // Создадим кривую с названием "Scatter".
+            // Обводка ромбиков будут рисоваться голубым цветом (Color.Blue),
+            // Опорные точки - ромбики (SymbolType.Diamond)
+            LineItem myCurve = pane.AddCurve("Test", list1, Color.Blue, SymbolType.Diamond);
+            LineItem myCurve_ = pane.AddCurve("Real", list2, Color.Red, SymbolType.Diamond);
+
+            // !!!
+            // У кривой линия будет невидимой
+            // Form1 temp = new Form1();
+            if ((checkBox2.CheckState == CheckState.Checked)&&(checkBox3.CheckState == CheckState.Checked))
+            {
+                myCurve.Line.IsVisible = true;  
+                myCurve_.Line.IsVisible = true; 
+            }
+
+            if ((checkBox2.CheckState != CheckState.Checked) && (checkBox3.CheckState == CheckState.Checked))
+            {
+                myCurve.Line.IsVisible = false;
+                myCurve_.Line.IsVisible = true;
+            }
+            if ((checkBox2.CheckState != CheckState.Checked) && (checkBox3.CheckState != CheckState.Checked))
+            {
+                myCurve.Line.IsVisible = false;
+                myCurve_.Line.IsVisible = false;
+            }
+            if ((checkBox2.CheckState == CheckState.Checked) && (checkBox3.CheckState != CheckState.Checked))
+            {
+                myCurve.Line.IsVisible = true;
+                myCurve_.Line.IsVisible = false;
+            }
+            // !!!
+            // Цвет заполнения отметок (ромбиков) - голубой
+            myCurve.Symbol.Fill.Color = Color.Blue;
+            myCurve_.Symbol.Fill.Color = Color.Green;
+
+            // !!!
+            // Тип заполнения - сплошная заливка
+            myCurve.Symbol.Fill.Type = FillType.Solid;
+            myCurve_.Symbol.Fill.Type = FillType.Solid;
+
+           
+            myCurve.Symbol.Size = 7;
+
+            zedGraphControl1.AxisChange();
+
+            
+            zedGraphControl1.Invalidate();
+        }
         private void DrawPoint(int a, int b, double[] y)
         {
             // Получим панель для рисования
@@ -159,31 +232,32 @@ namespace itiblab2_next
             int b = 1; // Верхняя граница временного интервала
             double[] t = new double[N];
             double[] y = new double[N];
+            int numepoh = Convert.ToInt32(textBox1.Text);
             t = formula.respred(a, b, N);
             for (int i = 0; i < t.Length; i++)
                 y[i] = formula.tsin(t[i]);
-            formula.obuch(y, t, p, N);
+            epoha EP = formula.obuch(y, t, p, N, numepoh);
+            double result;
+            double[] finalresult = new double [2 * N];
+            for (int dd = 0; dd < y.Length; dd++)
+                finalresult[dd] = y[dd];
+            List<double> result_vector = new List<double>();
+            for (int i = N - p; i < 2 * N - p; i++)
+            {
+                List<double> tempT = formula.getT(finalresult, i, i + p);
+                result = paramsNS.net(EP.W, tempT, p);
+                result_vector.Add(result);
+                finalresult[i + p] = result;
+                //finalresult = formula.UpdateSample(finalresult, result);
+            }
+            //DrawPoint(a, 2*b - a, finalresult);
+            double[] newt = formula.respred(a, 2*b - a, 2 * N);
+            double[] realy = new double[2 * N];
+            for (int i = 0; i < newt.Length; i++)
+                realy[i] = formula.tsin(newt[i]);
+            Draw2Point(a, 2 * b - a, finalresult, realy);
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            double[] w = new double[15];
-            double[] x = new double[40];
-            double[] y = new double[20];
-            double[] d = new double[20];
-            int p = 6;
-            double n = 0.3;
-            int a = -1;
-            int b = 1;
-            double er = 0.0;
-            double net = 0.0;
-            double step = (b - a) / 20;
-            for (int p1 = 0; p1 < 15; p1++)
-            {
-                int k = 0;
-                int era = 25;
-                
-            }
-        }
+       
     }
 }

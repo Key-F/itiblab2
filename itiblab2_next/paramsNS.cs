@@ -26,9 +26,9 @@ namespace itiblab2_next
         public static double[] pereshetW(double[] w, List<double> x, double nu, double delta_)
         {
 
-            for (int i = 0; i < w.Length - 1; i++)
-                w[i] = w[i] + nu * delta_ * x[i];
-            w[w.Length - 1] = w[w.Length - 1] + nu * delta_ * 1;
+            for (int i = 1; i < w.Length; i++)
+                w[i] = w[i] + nu * delta_ * x[i - 1];
+            w[0] = w[0] + nu * delta_ * 1;
             return w;
         }
         public static double error(int N, List<double> model, double[] real) // N - число точек
