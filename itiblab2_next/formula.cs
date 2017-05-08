@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ZedGraph;
 using System.Globalization; // Для работы с точкой в double (из textbox)
 
@@ -11,10 +12,7 @@ namespace itiblab2_next
     class formula
     {
 
-        public static double tsin(double t)
-        {
-            return t * t * Math.Sin(t);
-        }
+       
         public static double ParseDouble1(string s)
         {
             double d;
@@ -35,7 +33,7 @@ namespace itiblab2_next
         }
 
 
-        public static double[] respred(int a, int b, int N)
+        public static double[] respred(double a, double b, int N)
         {
             double N1 = N; // Для деления 
             double shag = (Math.Abs(a) + Math.Abs(b)) / N1;

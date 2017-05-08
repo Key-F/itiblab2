@@ -16,9 +16,20 @@ namespace itiblab2_next
         public Form1()
         {
             InitializeComponent();
+            ToolTip t = new ToolTip();
+            t.SetToolTip(textBox6, "Опасно");
+            t.SetToolTip(groupBox1, "Опасно");
         }
-       
-        public void DrawGraph(int a, int b, double[] y)
+        public double tsin(double t)
+        {
+            
+            if (radioButton1.Checked == true)
+            return t * t * Math.Sin(t);
+            if (radioButton2.Checked == true)
+                return  t * Math.Sin(t);
+            else return  Math.Sin(t);
+        }
+        public void DrawGraph(double a, double b, double[] y)
         {
             int i = 0;
             Dictionary<double, double> coordinats = new Dictionary<double, double>();// coordinats-хранит координаты точек функции
@@ -43,7 +54,7 @@ namespace itiblab2_next
             zedGraphControl1.Refresh();
             zedGraphControl1.Visible = true;
         }
-        private void Draw2Point(int a, int b, double[] y, double[] realy)
+        private void Draw2Point(double a, double b, double[] y, double[] realy, double shag)
         {
             
             
@@ -61,11 +72,11 @@ namespace itiblab2_next
             PointPairList list1 = new PointPairList(); // Для y
             PointPairList list2 = new PointPairList(); // Для realy
             int i = 0;
-            
 
-            // Заполняем список точек
 
-            for (double x = -1; x <= (b - 0.01); x += 0.1)// чертим график 0.99 чтобы exeption не было
+           // double shag = (Math.Abs(a) + Math.Abs(b)) / N;
+
+            for (double x = a; x <= (b - 0.0000000001); x += shag)// чертим график 0.99 чтобы exeption не было
             {
                 list1.Add(x, y[i]);//расчитываем координаты
                 list2.Add(x, realy[i]);
@@ -169,7 +180,7 @@ namespace itiblab2_next
             zedGraphControl1.Invalidate();
            
         }
-        private void DrawPoint(int a, int b, double[] y)
+        private void DrawPoint(double a, double b, double[] y)
         {
             // Получим панель для рисования
             GraphPane pane = zedGraphControl1.GraphPane;
@@ -193,7 +204,7 @@ namespace itiblab2_next
 
             // Заполняем список точек
             
-            for (double x = -1; x <= (b-0.01); x += 0.1)// чертим график 0.99 чтобы exeption не было
+            for (double x = a; x <= (b-0.01); x += 0.1)// чертим график 0.99 чтобы exeption не было
             {
                 list.Add(x, y[i]);//расчитываем координаты
                 i++;
@@ -244,7 +255,7 @@ namespace itiblab2_next
 
         private void button3_Click(object sender, EventArgs e)
         {
-            int N = 20;
+            int N = Convert.ToInt32(textBox6.Text); // Число точек по X
             int p = Convert.ToInt32(textBox3.Text); // Исходное количество нейронов
             if (p >= N)
             {
@@ -252,14 +263,15 @@ namespace itiblab2_next
                 return;
             }
             double nu = formula.ParseDouble1(textBox2.Text); // Коэффициент обучения
-            int a = -1; // Нижняя граница временного интервала
-            int b = 1; // Верхняя граница временного интервала
+            double a = formula.ParseDouble1(textBox4.Text); // Нижняя граница временного интервала
+            double b = formula.ParseDouble1(textBox5.Text); // Верхняя граница временного интервала
+            double shag = (Math.Abs(a) + Math.Abs(b)) / N;
             double[] t = new double[N];
             double[] y = new double[N];
             int numepoh = Convert.ToInt32(textBox1.Text);
             t = formula.respred(a, b, N);
             for (int i = 0; i < t.Length; i++)
-                y[i] = formula.tsin(t[i]);
+                y[i] = tsin(t[i]);
             epoha EP = formula.obuch(y, t, p, N, numepoh, nu);
             double result;
             double[] finalresult = new double [2 * N];
@@ -275,12 +287,35 @@ namespace itiblab2_next
                 //finalresult = formula.UpdateSample(finalresult, result);
             }
             
-            double[] newt = formula.respred(a, 2 * b - a, 2 * N);
             double[] realy = new double[2 * N];
-            for (int i = 0; i < newt.Length; i++)
-                realy[i] = formula.tsin(newt[i]);
-            Draw2Point(a, 2 * b - a, finalresult, realy);
+            int ii = 0;
+            for (double i = a; i < 2 * b - a; i += shag)
+            {
+                realy[ii] = tsin(i);
+                ii++;
+            }
+            Draw2Point(a, 2 * b - a , finalresult, realy, shag);
+            label7.Text = "Среднеквадратическая ошибка: " + Convert.ToString(EP.E);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            GraphPane pane = zedGraphControl1.GraphPane;
+            pane.CurveList.Clear();
+            pane.XAxis.Scale.MinAuto = true;
+            pane.XAxis.Scale.MaxAuto = true;
+            pane.YAxis.Scale.MinAuto = true;
+            pane.YAxis.Scale.MaxAuto = true;            
+            label7.Text = "";
+            pane.XAxis.MajorGrid.IsVisible = false;
+            pane.XAxis.MinorGrid.IsVisible = false;
+            pane.YAxis.MajorGrid.IsVisible = false;
+            pane.YAxis.MinorGrid.IsVisible = false;
+            zedGraphControl1.AxisChange();
+            zedGraphControl1.Refresh();
+        }
+
+        
 
        
     }
