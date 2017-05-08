@@ -9,10 +9,10 @@ namespace itiblab2_next
     class epoha
     {
         public int nomer;
-        //public double[,] Y1;
         public double[] Y; // Выходной сигнал
         public double[] W; // Вектор весов
         public double E; // Суммарная ошибка
+
 
         public epoha(List<double> w)
         {

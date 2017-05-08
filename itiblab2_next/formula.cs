@@ -4,43 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZedGraph;
+using System.Globalization; // Для работы с точкой в double (из textbox)
 
 namespace itiblab2_next
 {
     class formula
     {
 
-        public static List<double[]> makeX(double[] t, int p) // Создаем матрицу 
-        {
-            int k = 0; // Смещение
-            int k1 = 0;
-            double[] temp1 = new double[p];
-            List<double[]> X = new List<double[]>();
-            do
-            {
-                k1 = k;
-                for (int i = 0; i < p; i++)
-                {
-                    
-                    temp1[i] = t[k1];
-                    k1++;
-                    double[] temp2 = new double[p];
-                    
-                    if (i == p - 1)
-                    {
-                        Array.Copy(temp1, temp2, i + 1);
-                        X.Add(temp2);
-
-                    }
-                }
-                k++;           
-            }
-            while (k1 != t.Length);
-            return X;
-        }
         public static double tsin(double t)
         {
             return t * t * Math.Sin(t);
+        }
+        public static double ParseDouble1(string s)
+        {
+            double d;
+
+            if (!Double.TryParse(s, NumberStyles.Float, CultureInfo.CurrentCulture, out d))
+                Double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out d);
+
+            return d;
         }
         public static List<double> converter(double[] x) // из массива в List
         {
@@ -70,13 +52,13 @@ namespace itiblab2_next
                  result.Add(t[i]);
              return result;	
 }
-         public static double[] UpdateSample(double[] sample, double result)
+        /* public static double[] UpdateSample(double[] sample, double result)
          {
              for (int i = 0; i < sample.Count() - 1; ++i)
                  sample[i] = sample[i + 1];
              sample[sample.Count() - 1] = result;
              return sample;
-         }
+         } */
         public static epoha obuch(double[] real, double[] t, int p, int n, int epoch, double nu)  // real - значения, расчитанные по формуле, n = 20; t - распределение
         {
             int k = 0; // Счетчик эпох
@@ -90,13 +72,15 @@ namespace itiblab2_next
                 {
                     epoha Ep_ = new epoha(nextw);
                     Ep.Add(Ep_);
-                    Ep[k].nomer = k;                   
+                    Ep[k].nomer = k;
+                    //Ep[k].Y = new double[16];
                     double[] tempW = nextw.ToArray();
                     for (int i = 0; i < n - p; i++)
                     {
                         List<double> tempT = getT(real, i, i + p);
                         net1 = paramsNS.net(tempW, tempT, p);
                         dlta = paramsNS.delta(real[i + p], net1);
+                        //Ep[k].Y[i] = net1;
                         tempW = paramsNS.pereshetW(tempW, tempT, nu, dlta);                        
                         nextw = converter(tempW);
 
@@ -108,6 +92,6 @@ namespace itiblab2_next
                 } while (k != epoch); // пока не пройдем эпохи
                 return Ep[epoch - 1];               
         }
-        }
     }
+}
 

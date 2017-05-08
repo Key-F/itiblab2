@@ -55,7 +55,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="formula.cs" />
-    <Compile Include="graph.cs" />
     <Compile Include="paramsNS.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

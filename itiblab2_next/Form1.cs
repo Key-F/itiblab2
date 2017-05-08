@@ -72,7 +72,6 @@ namespace itiblab2_next
                 i++;
             }
             
-
             // !!!
             // Создадим кривую с названием "Scatter".
             // Обводка ромбиков будут рисоваться голубым цветом (Color.Blue),
@@ -182,11 +181,11 @@ namespace itiblab2_next
             PointPairList list = new PointPairList();
             int i = 0;
             // Интервал, в котором будут лежать точки
-            int xmin = -2;
-            int xmax = 2;
+            //int xmin = -2;
+            //int xmax = 2;
 
-            int ymin = -1; 
-            int ymax = 1;
+            //int ymin = -1; 
+            //int ymax = 1;
 
             //int pointsCount = 50;
 
@@ -252,7 +251,7 @@ namespace itiblab2_next
                 MessageBox.Show("p должно быть меньше N", "Ошибка", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                 return;
             }
-            double nu = double.Parse(textBox2.Text); // Коэффициент обучения
+            double nu = formula.ParseDouble1(textBox2.Text); // Коэффициент обучения
             int a = -1; // Нижняя граница временного интервала
             int b = 1; // Верхняя граница временного интервала
             double[] t = new double[N];
@@ -275,8 +274,8 @@ namespace itiblab2_next
                 finalresult[i + p] = result;
                 //finalresult = formula.UpdateSample(finalresult, result);
             }
-            //DrawPoint(a, 2*b - a, finalresult);
-            double[] newt = formula.respred(a, 2*b - a, 2 * N);
+            
+            double[] newt = formula.respred(a, 2 * b - a, 2 * N);
             double[] realy = new double[2 * N];
             for (int i = 0; i < newt.Length; i++)
                 realy[i] = formula.tsin(newt[i]);
