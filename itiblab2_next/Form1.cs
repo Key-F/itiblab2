@@ -164,5 +164,26 @@ namespace itiblab2_next
                 y[i] = formula.tsin(t[i]);
             formula.obuch(y, t, p, N);
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            double[] w = new double[15];
+            double[] x = new double[40];
+            double[] y = new double[20];
+            double[] d = new double[20];
+            int p = 6;
+            double n = 0.3;
+            int a = -1;
+            int b = 1;
+            double er = 0.0;
+            double net = 0.0;
+            double step = (b - a) / 20;
+            for (int p1 = 0; p1 < 15; p1++)
+            {
+                int k = 0;
+                int era = 25;
+                
+            }
+        }
     }
 }
