@@ -36,7 +36,7 @@ namespace itiblab2_next
         public static double[] respred(double a, double b, int N)
         {
             double N1 = N; // Для деления 
-            double shag = (Math.Abs(a) + Math.Abs(b)) / N1;
+            double shag = Math.Abs(a - b) / N1;
             double[] t = new double[N];
             t[0] = a;
             for (int i = 1; i < N; i++)

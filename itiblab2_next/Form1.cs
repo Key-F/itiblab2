@@ -186,7 +186,7 @@ namespace itiblab2_next
             double nu = formula.ParseDouble1(textBox2.Text); // Коэффициент обучения
             double a = formula.ParseDouble1(textBox4.Text); // Нижняя граница временного интервала
             double b = formula.ParseDouble1(textBox5.Text); // Верхняя граница временного интервала
-            double shag = (Math.Abs(a) + Math.Abs(b)) / N;
+            double shag = Math.Abs(a - b) / N;
             double[] t = new double[N];
             double[] y = new double[N];
             int numepoh = Convert.ToInt32(textBox1.Text);
