@@ -17,6 +17,12 @@ namespace itiblab2_next
         public Form1()
         {
             InitializeComponent();
+            GraphPane pane = zedGraphControl1.GraphPane;
+
+            pane.XAxis.Title.Text = "Координата X"; //подпись оси X
+            pane.YAxis.Title.Text = "Координата Y"; //подпись оси Y
+            pane.Title.Text = "График";//подпись графика
+            zedGraphControl1.Refresh();
             ToolTip t = new ToolTip();
             t.SetToolTip(textBox6, "Опасно");
             t.SetToolTip(groupBox1, "Опасно");
@@ -332,6 +338,7 @@ namespace itiblab2_next
             pane.XAxis.MinorGrid.IsVisible = false;
             pane.YAxis.MajorGrid.IsVisible = false;
             pane.YAxis.MinorGrid.IsVisible = false;
+            pane.Title.Text = "График";
             zedGraphControl1.AxisChange();
             zedGraphControl1.Refresh();
         }
