@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZedGraph;
+using org.mariuszgromada.math.mxparser;
 
 namespace itiblab2_next
 {
@@ -19,6 +20,7 @@ namespace itiblab2_next
             ToolTip t = new ToolTip();
             t.SetToolTip(textBox6, "Опасно");
             t.SetToolTip(groupBox1, "Опасно");
+            //groupBox5.Parent = groupBox2;
         }
         public double tsin(double t)
         {
@@ -27,7 +29,17 @@ namespace itiblab2_next
             return t * t * Math.Sin(t);
             if (radioButton2.Checked == true)
                 return  t * Math.Sin(t);
-            else return  Math.Sin(t);
+            if (radioButton4.Checked == true) // Не очень рационально, нужно вынести определение функции отдельно
+            {
+                string strokafunc = textBox7.Text;
+                Argument x = new Argument("x");
+                //string xx = "5+5";
+                Expression f = new Expression(strokafunc, x); 
+                x.setArgumentValue(t);
+                double m = f.calculate();
+                return f.calculate();
+            }
+            else return Math.Sin(t);
         }
         public void DrawGraph(double a, double b, double[] y)
         {
@@ -63,7 +75,16 @@ namespace itiblab2_next
 
             pane.XAxis.Title.Text = "Координата X"; //подпись оси X
             pane.YAxis.Title.Text = "Координата Y"; //подпись оси Y
-            pane.Title.Text = "(x^2)*sin(x)"; //подпись графика
+            if (radioButton1.Checked == true) //подпись графика
+                pane.Title.Text = "(x^2)*sin(x)"; 
+            if (radioButton2.Checked == true)
+                pane.Title.Text = "x*sin(x)"; 
+            if (radioButton4.Checked == true)
+            {
+                pane.Title.Text = textBox7.Text;           
+            }
+            else 
+            pane.Title.Text = "sin(x)"; 
 
             // Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы
             pane.CurveList.Clear();
@@ -314,6 +335,10 @@ namespace itiblab2_next
             zedGraphControl1.AxisChange();
             zedGraphControl1.Refresh();
         }
+
+        
+
+      
 
         
 

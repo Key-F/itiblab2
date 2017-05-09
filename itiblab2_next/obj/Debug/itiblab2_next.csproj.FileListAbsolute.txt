@@ -22,3 +22,4 @@ c:\users\keyf\documents\visual studio 2013\Projects\itiblab2_next\itiblab2_next\
 c:\users\keyf\documents\visual studio 2013\Projects\itiblab2_next\itiblab2_next\obj\Debug\itiblab2_next.csproj.GenerateResource.Cache
 c:\users\keyf\documents\visual studio 2013\Projects\itiblab2_next\itiblab2_next\obj\Debug\itiblab2_next.exe
 c:\users\keyf\documents\visual studio 2013\Projects\itiblab2_next\itiblab2_next\obj\Debug\itiblab2_next.pdb
+C:\Users\keyf\documents\visual studio 2013\Projects\itiblab2_next\itiblab2_next\bin\Debug\MathParser.org-mXparser.Net45.dll

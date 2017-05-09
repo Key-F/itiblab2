@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MathParser.org-mXparser</id>
+    <version>4.0.0.2</version>
+    <title>mXparser – Math Expressions Parser / Formula Evaluator library for JAVA Android C# .NET/MONO (.NET Framework, .NET Core, .NET Standard, .NET PCL, Xamarin.Android, Xamarin.iOS) CLS compliant</title>
+    <authors>Mariusz Gromada</authors>
+    <owners>Mariusz Gromada</owners>
+    <licenseUrl>http://mathparser.org/mxparser-license/</licenseUrl>
+    <projectUrl>http://mathparser.org/</projectUrl>
+    <iconUrl>http://mathparser.org/wp-content/uploads/2016/01/MathParser-org-mXparser-logo-Tutorial.jpg</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>mXparser is a super easy, rich, fast and highly flexible math expression parser library (parser and evaluator of mathematical expressions / formulas provided as plain text / string). Software delivers easy to use API for JAVA, Android and C# .NET/MONO (Common Language Specification compliant: F#, Visual Basic, C++/CLI). *** If you finnd the software useful donation is something you might consider: http://mathparser.org/donate/ ***</description>
+    <summary>mXparser is a super easy, rich, fast and highly flexible math expression parser library (parser and evaluator of mathematical expressions / formulas provided as plain text / string). Software delivers easy to use API for JAVA, Android and C# .NET/MONO (Common Language Specification compliant: F#, Visual Basic, C++/CLI). Expression parser comes with extensive documentation, easy to follow tutorial, "Hello World!" projects for different languages explained with many screenshots, and finally - last, but not least - performance test summary. Formula evaluator is distributed under "Simplified BSD license", which means software is completely free.</summary>
+    <releaseNotes>!!! Added ports to: .NET Core, .NET Standard, .NET PCL, Xamarin.Android, Xamarin.iOS !!! Major update: Bitwise Operators, Numbers in scientific notation, Units, Physical and Astronomical Constants, Equations solving via finding function root, Better tokens handling, Function Extensions - possibility of using your own implementation, ugs fixed.</releaseNotes>
+    <copyright>Copyright 2017 - Mariusz Gromada - MathParser.org</copyright>
+    <tags>Math Mathematics Mathematical Expression Expressions Parser Formula Evaluator Calculator Units Solve Probability Integration Derivative Calculus Recursion Operator Logic Condition Bitwise Custom MONO .NET Core Standard PCL Xamarin Android iOS</tags>
+  </metadata>
+</package>
