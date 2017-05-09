@@ -18,7 +18,6 @@ namespace itiblab2_next
         {
             InitializeComponent();
             GraphPane pane = zedGraphControl1.GraphPane;
-
             pane.XAxis.Title.Text = "Координата X"; //подпись оси X
             pane.YAxis.Title.Text = "Координата Y"; //подпись оси Y
             pane.Title.Text = "График";//подпись графика
@@ -26,11 +25,9 @@ namespace itiblab2_next
             ToolTip t = new ToolTip();
             t.SetToolTip(textBox6, "Опасно");
             t.SetToolTip(groupBox1, "Опасно");
-            //groupBox5.Parent = groupBox2;
         }
         public double tsin(double t)
-        {
-            
+        {         
             if (radioButton1.Checked == true)
             return t * t * Math.Sin(t);
             if (radioButton2.Checked == true)
@@ -38,8 +35,7 @@ namespace itiblab2_next
             if (radioButton4.Checked == true) // Не очень рационально, нужно вынести определение функции отдельно
             {
                 string strokafunc = textBox7.Text;
-                Argument x = new Argument("x");
-                //string xx = "5+5";
+                Argument x = new Argument("x");               
                 Expression f = new Expression(strokafunc, x); 
                 x.setArgumentValue(t);
                 double m = f.calculate();
@@ -47,35 +43,9 @@ namespace itiblab2_next
             }
             else return Math.Sin(t);
         }
-        public void DrawGraph(double a, double b, double[] y)
-        {
-            int i = 0;
-            Dictionary<double, double> coordinats = new Dictionary<double, double>();// coordinats-хранит координаты точек функции
-            for (double x = -1; x <= 0.99; x += 0.1)// чертим график 0.99 чтобы exeption не было
-            {
-                coordinats.Add(x, y[i]);//расчитываем координаты
-                i++;
-            }
-            GraphPane myPane = new GraphPane();
-            zedGraphControl1.GraphPane = myPane;
-            myPane.XAxis.Title.Text = "Координата X";//подпись оси X
-            myPane.YAxis.Title.Text = "Координата Y";//подпись оси Y
-            myPane.Title.Text = "(t^2)*sin(t)";//подпись графика
-            myPane.Fill = new Fill(Color.White);//фон графика заливаем градиентом
-            myPane.Chart.Fill.Type = FillType.None;
-            myPane.Legend.Position = LegendPos.Float;
-            myPane.Legend.IsHStack = false;
-            LineItem myCurve = myPane.AddCurve("Функция", coordinats.Keys.ToArray(), coordinats.Values.ToArray(), Color.Black, SymbolType.None);//строим график, цвет линии синий
-            myCurve.Line.Width = 2.0F;
-            myCurve.Symbol.Fill = new Fill(Color.White);
-            zedGraphControl1.AxisChange();
-            zedGraphControl1.Refresh();
-            zedGraphControl1.Visible = true;
-        }
+     
         private void Draw2Point(double a, double b, double[] y, double[] realy, double shag)
-        {
-            
-            
+        {           
             // Получим панель для рисования
             GraphPane pane = zedGraphControl1.GraphPane;
 
@@ -89,8 +59,8 @@ namespace itiblab2_next
             {
                 pane.Title.Text = textBox7.Text;           
             }
-            else 
-            pane.Title.Text = "sin(x)"; 
+            if (radioButton3.Checked == true)
+                pane.Title.Text = "sin(x)"; 
 
             // Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы
             pane.CurveList.Clear();
@@ -100,18 +70,14 @@ namespace itiblab2_next
             PointPairList list2 = new PointPairList(); // Для realy
             int i = 0;
 
-
-           // double shag = (Math.Abs(a) + Math.Abs(b)) / N;
-
-            for (double x = a; x <= (b - 0.0000000001); x += shag)// чертим график 0.99 чтобы exeption не было
+            for (double x = a; x <= (b - 0.0000000001); x += shag) // чертим график 0.99 чтобы exeption не было
             {
-                list1.Add(x, y[i]);//расчитываем координаты
+                list1.Add(x, y[i]); //расчитываем координаты
                 list2.Add(x, realy[i]);
                 i++;
             }
             
-            // !!!
-            // Создадим кривую с названием "Scatter".
+            
             // Обводка ромбиков будут рисоваться голубым цветом (Color.Blue),
             // Опорные точки - ромбики (SymbolType.Diamond)
             LineItem myCurve = pane.AddCurve("Test", list1, Color.Blue, SymbolType.Diamond);
@@ -207,79 +173,7 @@ namespace itiblab2_next
             zedGraphControl1.Invalidate();
            
         }
-        private void DrawPoint(double a, double b, double[] y)
-        {
-            // Получим панель для рисования
-            GraphPane pane = zedGraphControl1.GraphPane;
-
-            // Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы
-            pane.CurveList.Clear();
-
-            // Создадим список точек
-            PointPairList list = new PointPairList();
-            int i = 0;
-            // Интервал, в котором будут лежать точки
-            //int xmin = -2;
-            //int xmax = 2;
-
-            //int ymin = -1; 
-            //int ymax = 1;
-
-            //int pointsCount = 50;
-
-            //Random rnd = new Random();
-
-            // Заполняем список точек
-            
-            for (double x = a; x <= (b-0.01); x += 0.1)// чертим график 0.99 чтобы exeption не было
-            {
-                list.Add(x, y[i]);//расчитываем координаты
-                i++;
-            }
-
-            // !!!
-            // Создадим кривую с названием "Scatter".
-            // Обводка ромбиков будут рисоваться голубым цветом (Color.Blue),
-            // Опорные точки - ромбики (SymbolType.Diamond)
-            LineItem myCurve = pane.AddCurve("Scatter", list, Color.Blue, SymbolType.Diamond);
-
-            // !!!
-            // У кривой линия будет невидимой
-           // Form1 temp = new Form1();
-            
-
-            // !!!
-            // Цвет заполнения отметок (ромбиков) - голубой
-            myCurve.Symbol.Fill.Color = Color.Blue;
-
-            // !!!
-            // Тип заполнения - сплошная заливка
-            myCurve.Symbol.Fill.Type = FillType.Solid;
-
-            // !!!
-            // Размер ромбиков
-            myCurve.Symbol.Size = 7;
-
-
-            // Устанавливаем интересующий нас интервал по оси X
-          //  pane.XAxis.Scale.Min = xmin;
-           // pane.XAxis.Scale.Max = xmax;
-
-            // Устанавливаем интересующий нас интервал по оси Y
-            //pane.YAxis.Scale.Min = ymin;
-            //pane.YAxis.Scale.Max = ymax;
-
-            // Вызываем метод AxisChange (), чтобы обновить данные об осях. 
-            // В противном случае на рисунке будет показана только часть графика, 
-            // которая умещается в интервалы по осям, установленные по умолчанию
-            zedGraphControl1.AxisChange();
-
-            // Обновляем график
-            zedGraphControl1.Invalidate();
-        }
-
        
-
         private void button3_Click(object sender, EventArgs e)
         {
             int N = Convert.ToInt32(textBox6.Text); // Число точек по X
@@ -311,7 +205,6 @@ namespace itiblab2_next
                 result = paramsNS.net(EP.W, tempT, p);
                 result_vector.Add(result);
                 finalresult[i + p] = result;
-                //finalresult = formula.UpdateSample(finalresult, result);
             }
             
             double[] realy = new double[2 * N];
@@ -341,14 +234,6 @@ namespace itiblab2_next
             pane.Title.Text = "График";
             zedGraphControl1.AxisChange();
             zedGraphControl1.Refresh();
-        }
-
-        
-
-      
-
-        
-
-       
+        }       
     }
 }

@@ -44,19 +44,14 @@ namespace itiblab2_next
             return t;
         }
 
-         public static List<double> getT(double[] t, int start, int end) {
+         public static List<double> getT(double[] t, int start, int end)
+         {
              List<double> result = new List<double>();
              for (int i = start; i < end ; i++) 
                  result.Add(t[i]);
              return result;	
-}
-        /* public static double[] UpdateSample(double[] sample, double result)
-         {
-             for (int i = 0; i < sample.Count() - 1; ++i)
-                 sample[i] = sample[i + 1];
-             sample[sample.Count() - 1] = result;
-             return sample;
-         } */
+        }
+       
         public static epoha obuch(double[] real, double[] t, int p, int n, int epoch, double nu)  // real - значения, расчитанные по формуле, n = 20; t - распределение
         {
             int k = 0; // Счетчик эпох
@@ -71,22 +66,20 @@ namespace itiblab2_next
                     epoha Ep_ = new epoha(nextw);
                     Ep.Add(Ep_);
                     Ep[k].nomer = k;
-                    //Ep[k].Y = new double[16];
+                    //Ep[k].Y = new double[14];
                     double[] tempW = nextw.ToArray();
                     for (int i = 0; i < n - p; i++)
                     {
                         List<double> tempT = getT(real, i, i + p);
                         net1 = paramsNS.net(tempW, tempT, p);
-                        dlta = paramsNS.delta(real[i + p], net1);
+                        dlta = paramsNS.delta(real[i + p], net1);                       
                         //Ep[k].Y[i] = net1;
                         tempW = paramsNS.pereshetW(tempW, tempT, nu, dlta);                        
                         nextw = converter(tempW);
-
-                         //if (k == epoch - 1)
-                             Ep[k].E = Math.Sqrt(dlta * dlta);
+                        if (k == epoch - 1) // Считаем ошибку только для последней эпохи
+                            Ep[k].E = Math.Sqrt(dlta * dlta);
                     }	
-                    k++; 
-                    
+                    k++;                     
                 } while (k != epoch); // пока не пройдем эпохи
                 return Ep[epoch - 1];               
         }
